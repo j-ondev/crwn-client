@@ -1,32 +1,43 @@
-import { useGoogleLogin } from 'react-google-login'
-import { getEnv } from 'utils/config'
+import axios from 'axios'
+import { useGoogleLogin, GoogleLogout } from 'react-google-login'
 
-const clientId = getEnv('GOOGLE_CLIENT_ID')
+import { getEnv } from 'helpers/config'
+import { refreshToken } from 'helpers/google'
 
-console.log(process.env)
+const [ clientId, apiUrl ] = getEnv(['GOOGLE_CLIENT_ID', 'API_URL'])
 
 const GButtonLogin = (props) => {
   const onSuccess = (res) => {
-    console.log('[Login Success] res: ', res.profileObj)
+    axios.post(`${apiUrl}/auth/google/w`, {
+      tokenId: res.tokenId
+    })
+
+    refreshToken(res)
   }
 
   const onFailure = (res) => {
-    console.log('[Login failed] res: ', res)
+    console.error(res)
   }
 
   const { signIn } = useGoogleLogin({
     onSuccess,
     onFailure,
     clientId,
-    isSignedIn: true,
     cookiePolicy: 'single_host_origin'
   })
 
   return (
-    <button onClick={signIn} className='button'>
-      <img src='icons/google.svg' alt='Google letter G icon'/>
-      <span className='buttonText'>{props.buttonText}</span>
-    </button>
+    <div>
+      <button onClick={signIn} className='button'>
+        <img src='icons/google.svg' alt='Google letter G icon'/>
+        <span className='buttonText'>{props.buttonText}</span>
+      </button>
+      <GoogleLogout
+        clientId={clientId}
+        buttonText='Logout'
+        onLogoutSuccess={() => console.log('Logged out')}
+      />
+    </div>
   )
 }
 
