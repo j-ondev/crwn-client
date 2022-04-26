@@ -8,6 +8,7 @@
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "axios": "^0.26.1",
+    "google-one-tap": "^1.0.3",
     "graphql": "^16.3.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

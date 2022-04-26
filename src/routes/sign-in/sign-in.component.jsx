@@ -1,10 +1,11 @@
-import GButtonLogin from 'components/gbutton-login/gbutton-login.component'
+import { Fragment, /*useEffect*/ } from 'react'
+// import { googleLoginModal } from 'helpers/google'
 
 const SignIn = () => {
+  // useEffect(googleLoginModal, [])
+
   return (
-    <div>
-      <GButtonLogin buttonText='Sign in with Google' />
-    </div>
+    <Fragment></Fragment>
   )
 }
 

@@ -1,3 +1,9 @@
-// import { gql } from '@apollo/client'
+import { gql } from '@apollo/client'
 
-// const GET_USER = gql``
+// export const GET_USER = gql`
+
+// `
+
+// export const UPDATE_TOKEN = gql`
+
+// `

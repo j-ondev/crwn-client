@@ -1,22 +1,24 @@
 import axios from 'axios'
+import googleOneTap from 'google-one-tap'
+
 import { getEnv } from 'helpers/config'
 
-const [ apiUrl ] = getEnv(['API_URL'])
+const [ clientId, apiUrl ] = getEnv(['GOOGLE_CLIENT_ID', 'API_URL'])
 
-// TODO: NEED TO BE VERIFIED IF WORKS
-// TODO: CREATE ANOTHER METHOD TO REFRESH MORE RELIABLE
-export const refreshToken = (res) => {
-  let refreshTiming = (res.tokenObj.expires_in || 3600 - 5 * 60) * 1000
+export function googleLoginModal() {
+  googleOneTap({
+    client_id: clientId
+  }, async (res) => {
+    const { data: userData } = await axios.post(`${apiUrl}/auth/google/verify`, res)
+    
+    if (userData.error) return console.error
 
-  const newToken = async () => {
-    const newAuthRes = await res.reloadAuthResponse()
+    const { data: token } = await axios.post(`${apiUrl}/auth/google/authenticate`, userData)
 
-    axios.post(`${apiUrl}/auth/google/w`, {
-      tokenId: newAuthRes.id_token
-    })
+    // TODO: CREATE A LOCALSTORAGE VARIABLE TO RENEW TOKEN EACH 1H
 
-    setTimeout(newToken, refreshTiming)
-  }
-
-  setTimeout(newToken, refreshTiming)
+    // Needs a better handler
+    if (token.errors)
+      token.errors.map(message => console.error('Error fetching user: ', message))
+  })
 }
