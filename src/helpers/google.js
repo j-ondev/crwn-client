@@ -9,13 +9,15 @@ export function googleLoginModal() {
   googleOneTap({
     client_id: clientId
   }, async (res) => {
-    const { data: token } = await axios.post(`${apiUrl}/auth/google/authenticate`, res)
-    if (token.errors)
-      return token.errors.map(message => console.error('Error fetching user: ', message))
+    const { data } = await axios.post(`${apiUrl}/auth/google/authenticate`, res)
 
-    localStorage.setItem('refreshToken', token.exp_time)
-
-    // TODO: RESERVE TOKEN INSIDE A STORE
+    if (data) {
+      if (data.errors)
+        return data.errors.map(message => console.error('Error fetching user: ', message))
+      
+      localStorage.setItem('refreshToken', data.exp_time)
+      // TODO: RESERVE ACCESSTOKEN INSIDE A STORE
+    } else console.error('Error authenticating user')
 
     // Needs a better handler, maybe a modal for feedback
   })

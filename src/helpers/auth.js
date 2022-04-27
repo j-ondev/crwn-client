@@ -5,9 +5,9 @@
 //   const needRenew = expTime - 900 >= Date.now()
 
 //   if (needRenew) {
-//     // const token = GET TOKEN FROM STORE
+//     // const accessToken = GET TOKEN FROM STORE
 
-//     if(/* token */) {
+//     if(/* accessToken */) {
 //       // AXIOS POST
 //     } else {
 //       localStorage.removeItem('refreshToken')
