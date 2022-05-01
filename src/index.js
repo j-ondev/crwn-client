@@ -15,7 +15,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { getEnv } from 'helpers/config'
-const [ apiUrl ] = getEnv(['API_URL'])
+import GoogleOneTap from 'components/google-one-tap/google-one-tap.component';
+
+const apiUrl = getEnv('API_URL')
 
 const apolloClient = new ApolloClient({
   uri: `${apiUrl}/graphql`,
@@ -26,6 +28,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <ApolloProvider client={apolloClient}>
+      <GoogleOneTap />
       <BrowserRouter>
         <App />
       </BrowserRouter>

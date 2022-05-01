@@ -1,11 +1,12 @@
-import { Fragment, /*useEffect*/ } from 'react'
-// import { googleLoginModal } from 'helpers/google'
+import { Fragment } from 'react'
+
+import SignUpForm from 'components/sign-up-form/sign-up-form.component'
 
 const SignIn = () => {
-  // useEffect(googleLoginModal, [])
-
   return (
-    <Fragment></Fragment>
+    <Fragment>
+      <SignUpForm />
+    </Fragment>
   )
 }
 
