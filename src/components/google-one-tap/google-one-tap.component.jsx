@@ -8,33 +8,33 @@ import { SIGN_IN_GOOGLE, SIGN_UP_GOOGLE } from 'graphql/user.queries'
 const clientId = getEnv('GOOGLE_CLIENT_ID')
 
 const GoogleOneTap = () => {
-  const [signUpGoogle] = useMutation(SIGN_UP_GOOGLE)
-  const [signInGoogle] = useMutation(SIGN_IN_GOOGLE)
+  const [SignUpGoogle] = useMutation(SIGN_UP_GOOGLE)
+  const [SignInGoogle] = useMutation(SIGN_IN_GOOGLE)
 
   googleOneTap({
     client_id: clientId
   }, async (res) => {
     const { credential } = res
-    const { data: signInData, signInErrors } = await signInGoogle({ variables: { credential } })
+    const { data: SignInData, SignInErrors } = await SignInGoogle({ variables: { credential } })
 
-    if(signInErrors) {
-      signInErrors.map(error => console.error(error.message))
+    if(SignInErrors) {
+      SignInErrors.map(error => console.error(error.message))
       return { error: 'Failed to fetch google user' }
     }
 
-    let token = signInData.SignInGoogle
+    let token = SignInData.SignInGoogle
 
     if (!token) {
-      const {data: signUpData, errors: signUpErrors} = await signUpGoogle(credential)
+      const {data: SignUpData, errors: SignUpErrors} = await SignUpGoogle({ variables: { credential } })
 
-      if (signUpErrors) {
-        signInErrors.map(error => console.error(error.message))
+      if (SignUpErrors) {
+        SignInErrors.map(error => console.error(error.message))
         return { error: 'Failed to sign up with google account' }  
       }
 
-      token = signUpData.SignUpGoogle
+      token = SignUpData.SignUpGoogle
     }
-    
+
     const cookies = new Cookies()
     cookies.set('refreshToken', token.exp, {
       path: '/',

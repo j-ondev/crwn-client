@@ -28,7 +28,7 @@ export const SIGN_UP_GOOGLE = gql`
 
 export const SIGN_IN_GOOGLE = gql`
   mutation SignInGoogle($credential: String!) {
-    signInGoogle(credential: $credential) {
+    SignInGoogle(credential: $credential) {
       access_token,
       exp
     }
