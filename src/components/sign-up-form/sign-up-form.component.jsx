@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useLazyQuery, useMutation } from '@apollo/client'
+import { GET_USER, ADD_USER } from 'graphql/user.queries'
 
 const defaultFormFields = {
   display_name: '',
@@ -8,7 +10,9 @@ const defaultFormFields = {
 }
 
 const SignUpForm = () => {
-  const [formFields, setFormFields] = useState(defaultFormFields)
+  const [ GetUser, { data: getUserData, error: getUserError } ] = useLazyQuery(GET_USER)
+  const [ AddUser, { data, error } ] = useMutation(ADD_USER)
+  const [ formFields, setFormFields ] = useState(defaultFormFields)
   const { display_name, email, password, confirm_password } = formFields
 
   const handleSubmit = async (event) => {
@@ -17,7 +21,22 @@ const SignUpForm = () => {
     if(password !== confirm_password)
       return alert('passwords do not match')
 
-    console.log('Still creating.')
+    GetUser({ variables: { display_name, email, password } })
+
+    if (getUserError)
+      return console.error('An error occurred verifying your identity: ', error.message)
+
+    const userExists = data.GetUser
+
+    if (userExists)
+      return console.error('This email is already in use. Please try to log in instead.')
+
+    AddUser({ variables: { display_name, email, password } })
+
+    if(error)
+      return console.error('An error occurred submitting new user: ', error.message)
+
+    const user = data.AddUser
   }
 
   const handleChange = (event) => {
