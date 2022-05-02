@@ -1,19 +1,35 @@
 import { gql } from '@apollo/client'
 
-export const GET_SOCIAL_USER = gql`
-  query socialUser($identifier: ID!, $provider: String!) {
-    socialUser(identifier: $identifier, provider: $provider) {
-      id,
-      display_name,
-      email
+export const ADD_USER = gql`
+  mutation AddUser(
+    $display_name: String!,
+    $email: String!,
+    $password: String!
+  ) {
+    AddUser(
+      display_name: $display_name,
+      email: $email,
+      password: $password
+    ) {
+      access_token,
+      exp
     }
   }
 `
 
-export const ADD_GOOGLE_USER = gql`
-  mutation AddGoogleUser($credential: String!) {
-    AddGoogleUser(credential: $credential) {
-      accessToken,
+export const SIGN_UP_GOOGLE = gql`
+  mutation SignUpGoogle($credential: String!) {
+    SignUpGoogle(credential: $credential) {
+      access_token,
+      exp
+    }
+  }
+`
+
+export const SIGN_IN_GOOGLE = gql`
+  mutation SignInGoogle($credential: String!) {
+    signInGoogle(credential: $credential) {
+      access_token,
       exp
     }
   }
