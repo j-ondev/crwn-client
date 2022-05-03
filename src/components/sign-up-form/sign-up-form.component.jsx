@@ -16,8 +16,8 @@ const defaultFormFields = {
 }
 
 const SignUpForm = () => {
-  const [ GetUser, { data: getUserData, error: getUserError } ] = useLazyQuery(GET_USER)
-  const [ AddUser, { data, error } ] = useMutation(ADD_USER)
+  const [ GetUser ] = useLazyQuery(GET_USER)
+  const [ AddUser ] = useMutation(ADD_USER)
   const [ formFields, setFormFields ] = useState(defaultFormFields)
   const { display_name, email, password, confirm_password } = formFields
 
@@ -28,20 +28,30 @@ const SignUpForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    if(password !== confirm_password)
-      return alert('passwords do not match')
+    if(!display_name || !email || !password || !confirm_password)
+      return alert('You must fill all the fields to register')
 
-    GetUser({ variables: { display_name, email, password } })
+    if(password !== confirm_password)
+      return alert('Passwords do not match')
+
+    const {
+      data: { User: userExists },
+      error: getUserError
+    } = await GetUser({
+      variables: {
+        conditions: {
+          email
+        }
+      }
+    })
 
     if (getUserError)
-      return console.error('An error occurred verifying your identity: ', error.message)
-
-    const userExists = getUserData.GetUser
+      return console.error('An error occurred verifying your identity: ', getUserError.message)
 
     if (userExists)
       return alert('This email is already in use. Please try to log in instead.')
 
-    AddUser({ variables: { display_name, email, password } })
+    const { data, error } = await AddUser({ variables: { display_name, email, password } })
 
     if(error)
       return console.error('An error occurred submitting new user: ', error.message)

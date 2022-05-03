@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 export const GET_USER = gql`
   query GetUser($conditions: UserInput!) {
-    GetUser(conditions: $conditions) {
+    User(conditions: $conditions) {
       id,
       email,
       display_name
@@ -21,6 +21,15 @@ export const ADD_USER = gql`
       email: $email,
       password: $password
     ) {
+      access_token,
+      exp
+    }
+  }
+`
+
+export const SIGN_IN = gql`
+  mutation SignIn($email: String!,$password: String!) {
+    SignIn(email: $email, password: $password) {
       access_token,
       exp
     }
