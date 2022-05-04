@@ -1,12 +1,14 @@
-import './sign-in-form.styles.scss'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useMutation } from '@apollo/client'
 import Cookies from 'universal-cookie'
 
 import { SIGN_IN } from 'graphql/user.queries'
+import { UserContext } from 'contexts/user.context'
+
 import Input from 'components/input/input.component'
 import Button from 'components/button/button.component'
 
+import './sign-in-form.styles.scss'
 
 const defaultFormFields = {
   in_email: '',
@@ -14,9 +16,11 @@ const defaultFormFields = {
 }
 
 const SignInForm = () => {
-  const [ SignIn ] = useMutation(SIGN_IN)
-  const [ formFields, setFormFields ] = useState(defaultFormFields)
+  const [SignIn] = useMutation(SIGN_IN)
+  const [formFields, setFormFields] = useState(defaultFormFields)
   const { in_email, in_password } = formFields
+
+  const { setCurrentUser } = useContext(UserContext)
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields)
@@ -25,12 +29,12 @@ const SignInForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    if(!in_email || !in_password)
+    if (!in_email || !in_password)
       return alert('You must fill all the fields to register')
 
     const {
       data: { SignIn: token },
-      error
+      error,
     } = await SignIn({ variables: { email: in_email, password: in_password } })
 
     if (error) return alert(error.message)
@@ -40,9 +44,10 @@ const SignInForm = () => {
       cookies.set('refreshToken', token.exp, {
         path: '/',
         expires: new Date(token.exp * 1000),
-        sameSite: 'lax'
+        sameSite: 'lax',
       })
-      // Register token
+
+      setCurrentUser(token.access_token)
 
       resetFormFields()
     }
@@ -55,27 +60,29 @@ const SignInForm = () => {
   }
 
   return (
-    <div className='sign-in-container'>
+    <div className="sign-in-container">
       <h2>Already have an account?</h2>
       <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
         <Input
-          label='Email'
-          type='email'
+          label="Email"
+          type="email"
           required
           onChange={handleChange}
-          name='in_email'
+          name="in_email"
           value={in_email}
         />
 
         <Input
-          label='Password'
-          type='password' required onChange={handleChange}
-          name='in_password'
+          label="Password"
+          type="password"
+          required
+          onChange={handleChange}
+          name="in_password"
           value={in_password}
         />
 
-        <Button type='submit'>Sign In</Button>
+        <Button type="submit">Sign In</Button>
       </form>
     </div>
   )

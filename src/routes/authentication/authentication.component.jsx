@@ -5,7 +5,7 @@ import SignUpForm from 'components/sign-up-form/sign-up-form.component'
 
 const SignIn = () => {
   return (
-    <div className='authentication-container'>
+    <div className="authentication-container">
       <SignInForm />
       <SignUpForm />
     </div>
