@@ -39,7 +39,6 @@ const SignUpForm = () => {
 
     const {
       data: { User: userExists },
-      error: getUserError,
     } = await GetUser({
       variables: {
         conditions: {
@@ -48,38 +47,28 @@ const SignUpForm = () => {
       },
     })
 
-    if (getUserError)
-      return console.error(
-        'An error occurred verifying your identity: ',
-        getUserError.message
-      )
-
-    if (userExists)
+    if (userExists.__typename === 'User')
       return alert(
         'This email is already in use. Please try to log in instead.'
       )
 
-    const { data, error } = await AddUser({
+    const {
+      data: { AddUser: newUser },
+    } = await AddUser({
       variables: { display_name, email, password },
     })
 
-    if (error)
-      return console.error(
-        'An error occurred submitting new user: ',
-        error.message
-      )
+    if (newUser.__typename === 'UserError') return alert(newUser.code)
 
-    const token = data.AddUser
-
-    if (token) {
+    if (newUser.__typename === 'JsonWebToken') {
       const cookies = new Cookies()
-      cookies.set('refreshToken', token.exp, {
+      cookies.set('refreshToken', newUser.exp, {
         path: '/',
-        expires: new Date(token.exp * 1000),
+        expires: new Date(newUser.exp * 1000),
         sameSite: 'lax',
       })
 
-      setCurrentUser(token.access_token)
+      setCurrentUser(newUser.access_token)
 
       resetFormFields()
     }

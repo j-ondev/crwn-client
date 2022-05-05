@@ -41,21 +41,20 @@ const SignInForm = () => {
       return alert('You must fill all the fields to register')
 
     const {
-      data: { SignIn: token },
-      error,
+      data: { SignIn: user },
     } = await SignIn({ variables: { email: in_email, password: in_password } })
 
-    if (error) return alert(error.message)
+    if (user.__typename === 'UserError') return alert(user.code)
 
-    if (token) {
+    if (user.__typename === 'JsonWebToken') {
       const cookies = new Cookies()
-      cookies.set('refreshToken', token.exp, {
+      cookies.set('refreshToken', user.exp, {
         path: '/',
-        expires: new Date(token.exp * 1000),
+        expires: new Date(user.exp * 1000),
         sameSite: 'lax',
       })
 
-      setCurrentUser(token.access_token)
+      setCurrentUser(user.access_token)
 
       resetFormFields()
     }

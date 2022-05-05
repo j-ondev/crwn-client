@@ -3,9 +3,15 @@ import { gql } from '@apollo/client'
 export const GET_USER = gql`
   query GetUser($conditions: UserInput!) {
     User(conditions: $conditions) {
-      id
-      email
-      display_name
+      ... on User {
+        id
+        email
+        display_name
+      }
+      ... on UserError {
+        code
+        message
+      }
     }
   }
 `
@@ -17,8 +23,14 @@ export const ADD_USER = gql`
     $password: String!
   ) {
     AddUser(display_name: $display_name, email: $email, password: $password) {
-      access_token
-      exp
+      ... on JsonWebToken {
+        access_token
+        exp
+      }
+      ... on UserError {
+        code
+        message
+      }
     }
   }
 `
@@ -26,8 +38,14 @@ export const ADD_USER = gql`
 export const SIGN_IN = gql`
   mutation SignIn($email: String!, $password: String!) {
     SignIn(email: $email, password: $password) {
-      access_token
-      exp
+      ... on JsonWebToken {
+        access_token
+        exp
+      }
+      ... on UserError {
+        code
+        message
+      }
     }
   }
 `
@@ -35,8 +53,14 @@ export const SIGN_IN = gql`
 export const SIGN_UP_GOOGLE = gql`
   mutation SignUpGoogle($credential: String!) {
     SignUpGoogle(credential: $credential) {
-      access_token
-      exp
+      ... on JsonWebToken {
+        access_token
+        exp
+      }
+      ... on UserError {
+        code
+        message
+      }
     }
   }
 `
@@ -44,8 +68,14 @@ export const SIGN_UP_GOOGLE = gql`
 export const SIGN_IN_GOOGLE = gql`
   mutation SignInGoogle($credential: String!) {
     SignInGoogle(credential: $credential) {
-      access_token
-      exp
+      ... on JsonWebToken {
+        access_token
+        exp
+      }
+      ... on UserError {
+        code
+        message
+      }
     }
   }
 `

@@ -26,38 +26,44 @@ const useGoogleLogin = () => {
 
   const handleGoogleSignIn = async (res) => {
     const { credential } = res
-    const { data: SignInData, SignInErrors } = await SignInGoogle({
+    const {
+      data: { SignInGoogle: userExists },
+    } = await SignInGoogle({
       variables: { credential },
     })
 
-    if (SignInErrors) {
-      SignInErrors.map((error) => console.error(error.message))
-      return { error: 'Failed to fetch google user' }
-    }
+    // The correct approach should be using a modal/toast
+    // or some sort of ui-friendly feedback tool
+    if (
+      userExists.__typename === 'UserError' &&
+      !userExists.code !== 'user/not-found'
+    )
+      return alert(userExists.code)
 
-    let token = SignInData.SignInGoogle
+    let token = userExists.__typename === 'JsonWebToken' && userExists
 
-    if (!token) {
-      const { data: SignUpData, errors: SignUpErrors } = await SignUpGoogle({
+    if (!token.access_token && !token.exp) {
+      const {
+        data: { SignUpGoogle: newUser },
+      } = await SignUpGoogle({
         variables: { credential },
       })
 
-      if (SignUpErrors) {
-        SignInErrors.map((error) => console.error(error.message))
-        return { error: 'Failed to sign up with google account' }
-      }
+      if (newUser.__typename === 'UserError') return alert(newUser.code)
 
-      token = SignUpData.SignUpGoogle
+      token = newUser.__typename === 'JsonWebToken' && newUser
     }
 
-    const cookies = new Cookies()
-    cookies.set('refreshToken', token.exp, {
-      path: '/',
-      expires: new Date(token.exp * 1000),
-      sameSite: 'lax',
-    })
+    if (token) {
+      const cookies = new Cookies()
+      cookies.set('refreshToken', token.exp, {
+        path: '/',
+        expires: new Date(token.exp * 1000),
+        sameSite: 'lax',
+      })
 
-    setCurrentUser(token.access_token)
+      setCurrentUser(token.access_token)
+    }
   }
 }
 
