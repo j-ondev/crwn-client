@@ -7,7 +7,9 @@
     margin: 10px 0;
   }
 
-  button {
-    margin: 0 auto;
+  .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }

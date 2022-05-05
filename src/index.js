@@ -6,7 +6,6 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import App from './App'
 import { getEnv } from 'helpers/config'
 import { UserProvider } from 'contexts/user.context'
-import GoogleOneTap from 'components/google-one-tap/google-one-tap.component'
 
 import './fonts.scss'
 import './index.scss'
@@ -22,7 +21,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <ApolloProvider client={apolloClient}>
-      <GoogleOneTap />
       <BrowserRouter>
         <UserProvider>
           <App />

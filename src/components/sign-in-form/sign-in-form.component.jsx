@@ -1,9 +1,9 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 import Cookies from 'universal-cookie'
 
-import { SIGN_IN } from 'graphql/user.queries'
 import { UserContext } from 'contexts/user.context'
+import { SIGN_IN } from 'graphql/user.queries'
 
 import Input from 'components/input/input.component'
 import Button from 'components/button/button.component'
@@ -21,6 +21,14 @@ const SignInForm = () => {
   const { in_email, in_password } = formFields
 
   const { setCurrentUser } = useContext(UserContext)
+
+  useEffect(() => {
+    // eslint-disable-next-line no-undef
+    google.accounts.id.renderButton(
+      document.getElementById('g-button-sign-in'),
+      { theme: 'filled_blue', size: 'large', type: 'icon' }
+    )
+  })
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields)
@@ -82,7 +90,14 @@ const SignInForm = () => {
           value={in_password}
         />
 
-        <Button type="submit">Sign In</Button>
+        <div className="buttons-container">
+          <Button type="submit">Sign In</Button>
+          {/**
+           * At the moment google button has to be rendered with just the ICON
+           * since it can't be customized at all and it's width is very large
+           */}
+          <div id="g-button-sign-in"></div>
+        </div>
       </form>
     </div>
   )
