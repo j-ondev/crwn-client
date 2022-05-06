@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
-import Cookies from 'universal-cookie'
 
 import { UserContext } from 'contexts/user.context'
 import { SIGN_IN } from 'graphql/user.queries'
@@ -28,6 +27,8 @@ const SignInForm = () => {
       document.getElementById('g-button-sign-in'),
       { theme: 'filled_blue', size: 'large', type: 'icon' }
     )
+    // eslint-disable-next-line no-undef
+    google.accounts.id.cancel()
   })
 
   const resetFormFields = () => {
@@ -47,15 +48,15 @@ const SignInForm = () => {
     if (user.__typename === 'UserError') return alert(user.code)
 
     if (user.__typename === 'JsonWebToken') {
-      const cookies = new Cookies()
-      cookies.set('refreshToken', user.exp, {
-        path: '/',
-        expires: new Date(user.exp * 1000),
-        sameSite: 'lax',
-      })
+      localStorage.setItem(
+        'accessToken',
+        JSON.stringify({
+          key: user.access_token,
+          exp: user.exp,
+        })
+      )
 
       setCurrentUser(user.access_token)
-
       resetFormFields()
     }
   }

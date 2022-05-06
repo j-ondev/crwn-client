@@ -10,6 +10,7 @@ const Navigation = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext)
 
   const signOutHandler = async () => {
+    localStorage.removeItem('accessToken')
     setCurrentUser(null)
   }
 

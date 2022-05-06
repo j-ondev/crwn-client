@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import { useContext, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
-import Cookies from 'universal-cookie'
 
 import { getEnv } from 'helpers/config'
 import { UserContext } from 'contexts/user.context'
@@ -13,16 +12,20 @@ const useGoogleLogin = () => {
   const [SignUpGoogle] = useMutation(SIGN_UP_GOOGLE)
   const [SignInGoogle] = useMutation(SIGN_IN_GOOGLE)
 
-  const { setCurrentUser } = useContext(UserContext)
+  const { currentUser, setCurrentUser } = useContext(UserContext)
 
   useEffect(() => {
-    google.accounts.id.initialize({
-      client_id,
-      callback: handleGoogleSignIn,
-      cancel_on_tap_outside: false,
-    })
-    google.accounts.id.prompt()
-  })
+    if (!currentUser) {
+      google.accounts.id.initialize({
+        client_id,
+        callback: handleGoogleSignIn,
+        cancel_on_tap_outside: false,
+      })
+      google.accounts.id.prompt()
+    } else {
+      google.accounts.id.cancel()
+    }
+  }, [currentUser])
 
   const handleGoogleSignIn = async (res) => {
     const { credential } = res
@@ -55,13 +58,13 @@ const useGoogleLogin = () => {
     }
 
     if (token) {
-      const cookies = new Cookies()
-      cookies.set('refreshToken', token.exp, {
-        path: '/',
-        expires: new Date(token.exp * 1000),
-        sameSite: 'lax',
-      })
-
+      localStorage.setItem(
+        'accessToken',
+        JSON.stringify({
+          key: token.access_token,
+          exp: token.exp,
+        })
+      )
       setCurrentUser(token.access_token)
     }
   }

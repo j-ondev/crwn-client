@@ -1,6 +1,5 @@
 import { useState, useContext } from 'react'
 import { useLazyQuery, useMutation } from '@apollo/client'
-import Cookies from 'universal-cookie'
 
 import { GET_USER, ADD_USER } from 'graphql/user.queries'
 import { UserContext } from 'contexts/user.context'
@@ -61,15 +60,15 @@ const SignUpForm = () => {
     if (newUser.__typename === 'UserError') return alert(newUser.code)
 
     if (newUser.__typename === 'JsonWebToken') {
-      const cookies = new Cookies()
-      cookies.set('refreshToken', newUser.exp, {
-        path: '/',
-        expires: new Date(newUser.exp * 1000),
-        sameSite: 'lax',
-      })
+      localStorage.setItem(
+        'accessToken',
+        JSON.stringify({
+          key: newUser.access_token,
+          exp: newUser.exp,
+        })
+      )
 
       setCurrentUser(newUser.access_token)
-
       resetFormFields()
     }
   }
