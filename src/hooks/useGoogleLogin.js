@@ -19,7 +19,6 @@ const useGoogleLogin = () => {
       google.accounts.id.initialize({
         client_id,
         callback: handleGoogleSignIn,
-        cancel_on_tap_outside: false,
       })
       google.accounts.id.prompt()
     } else {
