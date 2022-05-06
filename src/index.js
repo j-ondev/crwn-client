@@ -6,6 +6,8 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import App from './App'
 import { getEnv } from 'helpers/config'
 import { UserProvider } from 'contexts/user.context'
+import { ProductsProvider } from 'contexts/products.context'
+import { CartProvider } from 'contexts/cart.context'
 
 import './fonts.scss'
 import './index.scss'
@@ -23,7 +25,11 @@ root.render(
     <ApolloProvider client={apolloClient}>
       <BrowserRouter>
         <UserProvider>
-          <App />
+          <ProductsProvider>
+            <CartProvider>
+              <App />
+            </CartProvider>
+          </ProductsProvider>
         </UserProvider>
       </BrowserRouter>
     </ApolloProvider>
