@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client'
 
 export const GET_USER = gql`
-  query GetUser($conditions: UserInput!) {
-    User(conditions: $conditions) {
-      ... on User {
+  query GetUser($filter: UserInput!) {
+    User(filter: $filter) {
+      ... on UserArray {
         id
         email
         display_name

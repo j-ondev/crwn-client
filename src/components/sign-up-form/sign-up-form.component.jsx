@@ -40,13 +40,13 @@ const SignUpForm = () => {
       data: { User: userExists },
     } = await GetUser({
       variables: {
-        conditions: {
+        filter: {
           email,
         },
       },
     })
 
-    if (userExists.__typename === 'User')
+    if (userExists.__typename === 'UserArray')
       return alert(
         'This email is already in use. Please try to log in instead.'
       )
