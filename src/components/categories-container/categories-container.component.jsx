@@ -1,17 +1,23 @@
 import CategoryItem from 'components/category-item/category-item.component'
-import { Link } from 'react-router-dom'
 
-import './categories-container.styles.scss'
+import {
+  CategoriesContainer,
+  CategoryLink,
+} from './categories-container.styles'
 
 const CategoryContainer = ({ categories }) => {
   return (
-    <div className="categories-container">
-      {categories.map((category) => (
-        <Link to={`shop/${category.title}`}>
-          <CategoryItem key={category.id} category={category} />
-        </Link>
-      ))}
-    </div>
+    <CategoriesContainer>
+      {categories.map(
+        (category) =>
+          category.active && (
+            /** Could use react-router-dom hook useNavigate instead of a link */
+            <CategoryLink key={category.id} to={`shop/${category.title}`}>
+              <CategoryItem key={category.id} category={category} />
+            </CategoryLink>
+          )
+      )}
+    </CategoriesContainer>
   )
 }
 

@@ -7,7 +7,7 @@ import { SIGN_IN } from 'graphql/user.queries'
 import Input from 'components/input/input.component'
 import Button from 'components/button/button.component'
 
-import './sign-in-form.styles.scss'
+import { SignInContainer, ButtonContainer } from './sign-in-form.styles'
 
 const defaultFormFields = {
   in_email: '',
@@ -68,7 +68,7 @@ const SignInForm = () => {
   }
 
   return (
-    <div className="sign-in-container">
+    <SignInContainer>
       <h2>Already have an account?</h2>
       <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
@@ -90,16 +90,16 @@ const SignInForm = () => {
           value={in_password}
         />
 
-        <div className="buttons-container">
+        <ButtonContainer>
           <Button type="submit">Sign In</Button>
           {/**
            * At the moment google button has to be rendered with just the ICON
            * since it can't be customized at all and it's width is very large
            */}
           <div id="g-button-sign-in"></div>
-        </div>
+        </ButtonContainer>
       </form>
-    </div>
+    </SignInContainer>
   )
 }
 
