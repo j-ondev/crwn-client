@@ -12,12 +12,7 @@ import {
 } from './checkout.styles'
 
 const Checkout = () => {
-  const { cartItems } = useContext(CartContext)
-
-  const cartSubtotal = cartItems.reduce(
-    (subtotal, cartItem) => subtotal + cartItem.price * cartItem.quantity,
-    0
-  )
+  const { cartItems, cartSubtotal } = useContext(CartContext)
 
   return (
     // I'd prefer using a table for this,
