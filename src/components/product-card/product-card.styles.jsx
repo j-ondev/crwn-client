@@ -42,6 +42,7 @@ export const CardName = styled.span`
 
 export const CardPrice = styled.span`
   width: 10%;
+  text-align: right;
 `
 
 export const CardFooter = styled.div`
@@ -49,5 +50,5 @@ export const CardFooter = styled.div`
   height: 5%;
   display: flex;
   justify-content: space-between;
-  font-size: 18px;
+  font-size: 22px;
 `

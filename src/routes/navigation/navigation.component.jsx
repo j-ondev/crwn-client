@@ -1,11 +1,13 @@
-import { Fragment, useContext } from 'react'
+import { Fragment } from 'react'
 import { Outlet } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
 import CartIcon from 'components/cart-icon/cart-icon.component'
 import CartDropdown from 'components/cart-dropdown/cart-dropdown.component'
 
-import { UserContext } from 'contexts/user.context'
-import { CartContext } from 'contexts/cart.context'
+import { selectIsCartOpen } from 'redux/cart/cart.selector'
+import { setCurrentUser } from 'redux/user/user.slice'
+import { selectCurrentUser } from 'redux/user/user.selector'
 
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg'
 
@@ -17,12 +19,13 @@ import {
 } from './navigation.styles'
 
 const Navigation = () => {
-  const { currentUser, setCurrentUser } = useContext(UserContext)
-  const { isCartOpen } = useContext(CartContext)
+  const dispatch = useDispatch()
+  const isCartOpen = useSelector(selectIsCartOpen)
+  const currentUser = useSelector(selectCurrentUser)
 
-  const signOutHandler = async () => {
+  const signOutHandler = () => {
     localStorage.removeItem('accessToken')
-    setCurrentUser(null)
+    dispatch(setCurrentUser(null))
   }
 
   return (

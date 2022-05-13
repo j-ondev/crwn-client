@@ -1,8 +1,9 @@
-import { useState, useContext } from 'react'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useLazyQuery, useMutation } from '@apollo/client'
 
-import { GET_USER, ADD_USER } from 'graphql/user.queries'
-import { UserContext } from 'contexts/user.context'
+import { GET_USER, ADD_USER } from 'apollo/user.queries'
+import { setCurrentUser } from 'redux/user/user.slice.js'
 
 import Input from 'components/input/input.component'
 import Button from 'components/button/button.component'
@@ -17,12 +18,11 @@ const defaultFormFields = {
 }
 
 const SignUpForm = () => {
+  const dispatch = useDispatch()
   const [GetUser] = useLazyQuery(GET_USER)
   const [AddUser] = useMutation(ADD_USER)
   const [formFields, setFormFields] = useState(defaultFormFields)
   const { display_name, email, password, confirm_password } = formFields
-
-  const { setCurrentUser } = useContext(UserContext)
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields)
@@ -68,7 +68,7 @@ const SignUpForm = () => {
         })
       )
 
-      setCurrentUser(newUser.access_token)
+      dispatch(setCurrentUser(newUser.access_token))
       resetFormFields()
     }
   }

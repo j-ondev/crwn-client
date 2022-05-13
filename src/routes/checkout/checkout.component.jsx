@@ -1,6 +1,5 @@
-import { useContext } from 'react'
-
-import { CartContext } from 'contexts/cart.context'
+import { useSelector } from 'react-redux'
+import { selectCartItems, selectCartSubtotal } from 'redux/cart/cart.selector'
 
 import CheckoutItem from 'components/checkout-item/checkout-item.component'
 
@@ -12,7 +11,8 @@ import {
 } from './checkout.styles'
 
 const Checkout = () => {
-  const { cartItems, cartSubtotal } = useContext(CartContext)
+  const cartItems = useSelector(selectCartItems)
+  const cartSubtotal = useSelector(selectCartSubtotal)
 
   return (
     // I'd prefer using a table for this,

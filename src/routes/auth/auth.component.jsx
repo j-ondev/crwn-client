@@ -1,9 +1,9 @@
-import { AuthenticationContainer } from './authentication.styles'
+import { AuthenticationContainer } from './auth.styles'
 
 import SignInForm from 'components/sign-in-form/sign-in-form.component'
 import SignUpForm from 'components/sign-up-form/sign-up-form.component'
 
-const SignIn = () => {
+const Auth = () => {
   return (
     <AuthenticationContainer>
       <SignInForm />
@@ -12,4 +12,4 @@ const SignIn = () => {
   )
 }
 
-export default SignIn
+export default Auth

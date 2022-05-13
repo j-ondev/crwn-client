@@ -1,13 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 
 import App from './App'
-import { getEnv } from 'helpers/config'
-import { UserProvider } from 'contexts/user.context'
-import { CategoriesProvider } from 'contexts/categories.context'
-import { CartProvider } from 'contexts/cart.context'
+import { getEnv } from 'utils/config'
+import { store } from 'app/store'
 
 import './fonts.scss'
 import './index.scss'
@@ -23,15 +22,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <ApolloProvider client={apolloClient}>
-      <BrowserRouter>
-        <UserProvider>
-          <CategoriesProvider>
-            <CartProvider>
-              <App />
-            </CartProvider>
-          </CategoriesProvider>
-        </UserProvider>
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
     </ApolloProvider>
   </React.StrictMode>
 )

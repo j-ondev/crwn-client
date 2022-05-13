@@ -1,13 +1,14 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 
-import { UserContext } from 'contexts/user.context'
-import { SIGN_IN } from 'graphql/user.queries'
+import { setCurrentUser } from 'redux/user/user.slice'
+import { SIGN_IN } from 'apollo/user.queries'
 
 import Input from 'components/input/input.component'
 import Button from 'components/button/button.component'
 
 import { SignInContainer, ButtonContainer } from './sign-in-form.styles'
+import { useDispatch } from 'react-redux'
 
 const defaultFormFields = {
   in_email: '',
@@ -15,11 +16,10 @@ const defaultFormFields = {
 }
 
 const SignInForm = () => {
+  const dispatch = useDispatch()
   const [SignIn] = useMutation(SIGN_IN)
   const [formFields, setFormFields] = useState(defaultFormFields)
   const { in_email, in_password } = formFields
-
-  const { setCurrentUser } = useContext(UserContext)
 
   useEffect(() => {
     // eslint-disable-next-line no-undef
@@ -56,7 +56,7 @@ const SignInForm = () => {
         })
       )
 
-      setCurrentUser(user.access_token)
+      dispatch(setCurrentUser(user.access_token))
       resetFormFields()
     }
   }

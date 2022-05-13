@@ -1,3 +1,12 @@
+/**
+ * Since PG is different from Firebase,
+ * I created these functions to convert
+ * GraphQL data to match the same structure.
+ */
+
+export const getCategoryProducts = (category, products) =>
+  products.filter((product) => category.id === product.category)
+
 export const getProductsByCategory = (categories, products) => {
   const productsList = {}
 
