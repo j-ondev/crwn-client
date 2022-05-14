@@ -24,7 +24,6 @@ const Navigation = () => {
   const currentUser = useSelector(selectCurrentUser)
 
   const signOutHandler = () => {
-    localStorage.removeItem('accessToken')
     dispatch(setCurrentUser(null))
   }
 

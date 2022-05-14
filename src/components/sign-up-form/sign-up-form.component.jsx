@@ -60,15 +60,9 @@ const SignUpForm = () => {
     if (newUser.__typename === 'UserError') return alert(newUser.code)
 
     if (newUser.__typename === 'JsonWebToken') {
-      localStorage.setItem(
-        'accessToken',
-        JSON.stringify({
-          key: newUser.access_token,
-          exp: newUser.exp,
-        })
-      )
+      const { access_token, exp } = newUser
 
-      dispatch(setCurrentUser(newUser.access_token))
+      dispatch(setCurrentUser({ access_token, exp }))
       resetFormFields()
     }
   }

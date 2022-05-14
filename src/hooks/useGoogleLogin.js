@@ -1,21 +1,23 @@
 /* eslint-disable no-undef */
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useMutation } from '@apollo/client'
 
 import { getEnv } from 'utils/config'
 import { setCurrentUser } from 'redux/user/user.slice'
 import { SIGN_IN_GOOGLE, SIGN_UP_GOOGLE } from 'apollo/user.queries'
+import { selectCurrentUser } from 'redux/user/user.selector'
 
 const client_id = getEnv('GOOGLE_CLIENT_ID')
 
 const useGoogleLogin = () => {
   const dispatch = useDispatch()
+  const currentUser = useSelector(selectCurrentUser)
   const [SignUpGoogle] = useMutation(SIGN_UP_GOOGLE)
   const [SignInGoogle] = useMutation(SIGN_IN_GOOGLE)
 
   useEffect(() => {
-    if (!localStorage.getItem('accessToken')) {
+    if (!currentUser) {
       google.accounts.id.initialize({
         client_id,
         callback: handleGoogleSignIn,
@@ -24,7 +26,7 @@ const useGoogleLogin = () => {
     } else {
       google.accounts.id.cancel()
     }
-  })
+  }, [currentUser])
 
   const handleGoogleSignIn = async (res) => {
     const { credential } = res
@@ -56,15 +58,10 @@ const useGoogleLogin = () => {
       token = newUser.__typename === 'JsonWebToken' && newUser
     }
 
-    if (token) {
-      localStorage.setItem(
-        'accessToken',
-        JSON.stringify({
-          key: token.access_token,
-          exp: token.exp,
-        })
-      )
-      dispatch(setCurrentUser(token.access_token))
+    const { access_token, exp } = token
+
+    if (access_token && exp) {
+      dispatch(setCurrentUser({ access_token, exp }))
     }
   }
 }

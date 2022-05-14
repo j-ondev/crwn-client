@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
 import { useLazyQuery, useQuery } from '@apollo/client'
@@ -7,7 +6,6 @@ import { GET_ALL_PRODUCTS } from 'apollo/products.queries'
 import { GET_ALL_CATEGORIES } from 'apollo/categories.queries'
 
 import useGoogleLogin from 'hooks/useGoogleLogin'
-import { setCurrentUser } from 'redux/user/user.slice'
 import { setCategories } from 'redux/categories/category.slice'
 import { getCategoryProducts } from 'helpers/products'
 
@@ -38,11 +36,6 @@ const App = () => {
 
       dispatch(setCategories(categoriesMap))
     },
-  })
-
-  useEffect(() => {
-    const accessToken = JSON.parse(localStorage.getItem('accessToken'))
-    accessToken && dispatch(setCurrentUser(accessToken.key))
   })
 
   return (

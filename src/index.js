@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import { PersistGate } from 'redux-persist/integration/react'
 
 import App from './App'
 import { getEnv } from 'utils/config'
-import { store } from 'app/store'
+import { store, persistor } from 'app/store'
 
 import './fonts.scss'
 import './index.scss'
@@ -23,9 +24,11 @@ root.render(
   <React.StrictMode>
     <ApolloProvider client={apolloClient}>
       <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <PersistGate persistor={persistor}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </PersistGate>
       </Provider>
     </ApolloProvider>
   </React.StrictMode>

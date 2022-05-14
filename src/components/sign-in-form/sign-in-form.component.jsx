@@ -48,15 +48,9 @@ const SignInForm = () => {
     if (user.__typename === 'UserError') return alert(user.code)
 
     if (user.__typename === 'JsonWebToken') {
-      localStorage.setItem(
-        'accessToken',
-        JSON.stringify({
-          key: user.access_token,
-          exp: user.exp,
-        })
-      )
+      const { access_token, exp } = user
 
-      dispatch(setCurrentUser(user.access_token))
+      dispatch(setCurrentUser({ access_token, exp }))
       resetFormFields()
     }
   }
