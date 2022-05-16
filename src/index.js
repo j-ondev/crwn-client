@@ -2,22 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import { ApolloProvider } from '@apollo/client'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import App from './App'
-import { getEnv } from 'utils/config'
 import { store, persistor } from 'app/store'
+import { apolloClient } from 'app/api'
 
 import './fonts.scss'
 import './index.scss'
-
-const apiUrl = getEnv('API_URL')
-
-const apolloClient = new ApolloClient({
-  uri: `${apiUrl}/graphql`,
-  cache: new InMemoryCache(),
-})
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(

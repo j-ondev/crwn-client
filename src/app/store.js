@@ -3,6 +3,8 @@ import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import logger from 'redux-logger'
 
+import { autoLogin } from 'redux/middlewares/auto-login.middleware'
+
 import userReducer from 'redux/user/user.slice'
 import categoriesReducer from 'redux/categories/category.slice'
 import cartReducer from 'redux/cart/cart.slice'
@@ -27,7 +29,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(logger),
+    }).concat(autoLogin, logger),
 })
 
 export const persistor = persistStore(store)

@@ -6,8 +6,8 @@ import CartIcon from 'components/cart-icon/cart-icon.component'
 import CartDropdown from 'components/cart-dropdown/cart-dropdown.component'
 
 import { selectIsCartOpen } from 'redux/cart/cart.selector'
-import { setCurrentUser } from 'redux/user/user.slice'
-import { selectCurrentUser } from 'redux/user/user.selector'
+import { setUser } from 'redux/user/user.slice'
+import { selectUser } from 'redux/user/user.selector'
 
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg'
 
@@ -21,10 +21,10 @@ import {
 const Navigation = () => {
   const dispatch = useDispatch()
   const isCartOpen = useSelector(selectIsCartOpen)
-  const currentUser = useSelector(selectCurrentUser)
+  const user = useSelector(selectUser)
 
   const signOutHandler = () => {
-    dispatch(setCurrentUser(null))
+    dispatch(setUser(null))
   }
 
   return (
@@ -35,7 +35,7 @@ const Navigation = () => {
         </LogoContainer>
         <NavLinks>
           <NavLink to="/shop">SHOP</NavLink>
-          {currentUser ? (
+          {user ? (
             <NavLink as="span" onClick={signOutHandler}>
               SIGN OUT
             </NavLink>

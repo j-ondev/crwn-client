@@ -4,29 +4,30 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useMutation } from '@apollo/client'
 
 import { getEnv } from 'utils/config'
-import { setCurrentUser } from 'redux/user/user.slice'
+import { setUser } from 'redux/user/user.slice'
 import { SIGN_IN_GOOGLE, SIGN_UP_GOOGLE } from 'apollo/user.queries'
-import { selectCurrentUser } from 'redux/user/user.selector'
+import { selectUser } from 'redux/user/user.selector'
 
 const client_id = getEnv('GOOGLE_CLIENT_ID')
 
 const useGoogleLogin = () => {
   const dispatch = useDispatch()
-  const currentUser = useSelector(selectCurrentUser)
+  const user = useSelector(selectUser)
   const [SignUpGoogle] = useMutation(SIGN_UP_GOOGLE)
   const [SignInGoogle] = useMutation(SIGN_IN_GOOGLE)
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!user) {
       google.accounts.id.initialize({
         client_id,
         callback: handleGoogleSignIn,
       })
+
       google.accounts.id.prompt()
     } else {
       google.accounts.id.cancel()
     }
-  }, [currentUser])
+  }, [user])
 
   const handleGoogleSignIn = async (res) => {
     const { credential } = res
@@ -61,7 +62,7 @@ const useGoogleLogin = () => {
     const { access_token, exp } = token
 
     if (access_token && exp) {
-      dispatch(setCurrentUser({ access_token, exp }))
+      dispatch(setUser({ access_token, exp }))
     }
   }
 }

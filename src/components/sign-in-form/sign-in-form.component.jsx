@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 
-import { setCurrentUser } from 'redux/user/user.slice'
+import { setUser } from 'redux/user/user.slice'
 import { SIGN_IN } from 'apollo/user.queries'
 
 import Input from 'components/input/input.component'
@@ -50,7 +50,7 @@ const SignInForm = () => {
     if (user.__typename === 'JsonWebToken') {
       const { access_token, exp } = user
 
-      dispatch(setCurrentUser({ access_token, exp }))
+      dispatch(setUser({ access_token, exp }))
       resetFormFields()
     }
   }

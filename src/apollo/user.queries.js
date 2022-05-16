@@ -79,3 +79,18 @@ export const SIGN_IN_GOOGLE = gql`
     }
   }
 `
+
+export const RENEW_TOKEN = gql`
+  mutation RenewToken {
+    RenewToken {
+      ... on JsonWebToken {
+        access_token
+        exp
+      }
+      ... on UserError {
+        code
+        message
+      }
+    }
+  }
+`
