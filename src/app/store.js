@@ -1,9 +1,18 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import { persistReducer, persistStore } from 'redux-persist'
+import {
+  persistReducer,
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import logger from 'redux-logger'
 
-import { autoLogin } from 'redux/middlewares/auto-login.middleware'
+import autoLogin from 'redux/middlewares/auto-login.middleware'
 
 import userReducer from 'redux/user/user.slice'
 import categoriesReducer from 'redux/categories/category.slice'
@@ -28,7 +37,9 @@ export const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false,
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
     }).concat(autoLogin, logger),
 })
 
