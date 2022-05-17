@@ -1,4 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
+
 import {
   persistReducer,
   persistStore,
@@ -11,7 +12,6 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import logger from 'redux-logger'
-
 import autoLogin from 'redux/middlewares/auto-login.middleware'
 
 import userReducer from 'redux/user/user.slice'
