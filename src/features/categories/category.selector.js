@@ -16,3 +16,8 @@ export const selectProductsByCategory = createSelector(
       return acc
     }, {})
 )
+
+export const selectCategoriesLoading = createSelector(
+  [selectCategoryReducer],
+  (categoriesSlice) => categoriesSlice.loading
+)

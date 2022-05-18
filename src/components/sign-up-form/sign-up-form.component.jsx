@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useLazyQuery, useMutation } from '@apollo/client'
 
 import { GET_USER, ADD_USER } from 'apollo/user.queries'
-import { setUser } from 'redux/user/user.slice.js'
+import { setUser } from 'features/user/user.slice.js'
 
 import Input from 'components/input/input.component'
 import Button from 'components/button/button.component'

@@ -1,13 +1,9 @@
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
-import { useLazyQuery, useQuery } from '@apollo/client'
-
-import { GET_ALL_PRODUCTS } from 'apollo/products.queries'
-import { GET_ALL_CATEGORIES } from 'apollo/categories.queries'
 
 import useGoogleLogin from 'hooks/useGoogleLogin'
-import { setCategories } from 'redux/categories/category.slice'
-import { getCategoryProducts } from 'helpers/products'
+import { fetchCategories } from 'features/categories/category.thunk'
 
 import Navigation from 'routes/navigation/navigation.component'
 import Home from 'routes/home/home.component'
@@ -17,25 +13,18 @@ import Checkout from 'routes/checkout/checkout.component'
 
 const App = () => {
   const dispatch = useDispatch()
-  const [getAllProducts] = useLazyQuery(GET_ALL_PRODUCTS)
 
   useGoogleLogin()
 
-  useQuery(GET_ALL_CATEGORIES, {
-    onCompleted: async ({ Categories }) => {
-      const {
-        data: { Products: dbProducts },
-      } = await getAllProducts()
+  useEffect(() => {
+    async function fetchCategoriesAsync() {
+      const result = await dispatch(fetchCategories())
 
-      const categoriesMap = Categories.map((category) => {
-        return {
-          ...category,
-          items: getCategoryProducts(category, dbProducts),
-        }
-      })
+      if (fetchCategories.rejected.match(result) && !result.payload)
+        alert(result.error.message)
+    }
 
-      dispatch(setCategories(categoriesMap))
-    },
+    fetchCategoriesAsync()
   })
 
   return (

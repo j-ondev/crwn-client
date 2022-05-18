@@ -1,5 +1,8 @@
 import { useSelector } from 'react-redux'
-import { selectCartItems, selectCartSubtotal } from 'redux/cart/cart.selector'
+import {
+  selectCartItems,
+  selectCartSubtotal,
+} from 'features/cart/cart.selector'
 
 import CheckoutItem from 'components/checkout-item/checkout-item.component'
 

@@ -5,9 +5,9 @@ import { BrowserRouter } from 'react-router-dom'
 import { ApolloProvider } from '@apollo/client'
 import { PersistGate } from 'redux-persist/integration/react'
 
-import App from './App'
 import { store, persistor } from 'app/store'
 import { apolloClient } from 'app/api'
+import App from './App'
 
 import './fonts.scss'
 import './index.scss'

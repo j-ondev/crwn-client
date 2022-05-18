@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 
-import { setUser } from 'redux/user/user.slice'
+import { setUser } from 'features/user/user.slice'
 import { SIGN_IN } from 'apollo/user.queries'
 
 import Input from 'components/input/input.component'

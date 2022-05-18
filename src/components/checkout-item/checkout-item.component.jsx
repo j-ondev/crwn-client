@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 
-import { selectCartItems } from 'redux/cart/cart.selector'
-import { setCartItems } from 'redux/cart/cart.slice'
+import { selectCartItems } from 'features/cart/cart.selector'
+import { setCartItems } from 'features/cart/cart.slice'
 import {
   addItemToCart,
   removeItemFromCart,

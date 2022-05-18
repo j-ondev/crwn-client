@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import CartIcon from 'components/cart-icon/cart-icon.component'
 import CartDropdown from 'components/cart-dropdown/cart-dropdown.component'
 
-import { selectIsCartOpen } from 'redux/cart/cart.selector'
-import { setUser } from 'redux/user/user.slice'
-import { selectUser } from 'redux/user/user.selector'
+import { selectIsCartOpen } from 'features/cart/cart.selector'
+import { setUser } from 'features/user/user.slice'
+import { selectUser } from 'features/user/user.selector'
 
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg'
 

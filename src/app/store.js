@@ -12,15 +12,16 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import logger from 'redux-logger'
-import autoLogin from 'redux/middlewares/auto-login.middleware'
+import autoLogin from 'features/middlewares/auto-login.middleware'
 
-import userReducer from 'redux/user/user.slice'
-import categoriesReducer from 'redux/categories/category.slice'
-import cartReducer from 'redux/cart/cart.slice'
+import userReducer from 'features/user/user.slice'
+import categoriesReducer from 'features/categories/category.slice'
+import cartReducer from 'features/cart/cart.slice'
 
 const persistConfig = {
   key: 'root',
   storage,
+  whitelist: ['cart'],
 }
 
 const persistedReducer = persistReducer(

@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useMutation } from '@apollo/client'
 
 import { getEnv } from 'utils/config'
-import { setUser } from 'redux/user/user.slice'
+import { setUser } from 'features/user/user.slice'
 import { SIGN_IN_GOOGLE, SIGN_UP_GOOGLE } from 'apollo/user.queries'
-import { selectUser } from 'redux/user/user.selector'
+import { selectUser } from 'features/user/user.selector'
 
 const client_id = getEnv('GOOGLE_CLIENT_ID')
 
