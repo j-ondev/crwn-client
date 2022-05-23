@@ -4,9 +4,11 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { ApolloProvider } from '@apollo/client'
 import { PersistGate } from 'redux-persist/integration/react'
+import { Elements } from '@stripe/react-stripe-js'
 
 import { store, persistor } from 'app/store'
 import { apolloClient } from 'app/api'
+import { stripePromise } from 'utils/stripe/stripe.utils'
 import App from './App'
 
 import './fonts.scss'
@@ -19,7 +21,9 @@ root.render(
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <BrowserRouter>
-            <App />
+            <Elements stripe={stripePromise}>
+              <App />
+            </Elements>
           </BrowserRouter>
         </PersistGate>
       </Provider>
