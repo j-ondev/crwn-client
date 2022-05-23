@@ -4,7 +4,7 @@ import { RENEW_TOKEN } from 'apollo/user.queries'
 import { setUser } from 'features/user/user.slice'
 import { apolloClient } from 'app/api'
 
-const autoLogin =
+const autoLoginMiddleware =
   ({ getState, dispatch }) =>
   (next) =>
   async (action) => {
@@ -30,4 +30,4 @@ const autoLogin =
     return next(action)
   }
 
-export default autoLogin
+export default autoLoginMiddleware

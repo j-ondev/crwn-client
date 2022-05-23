@@ -9,23 +9,14 @@ const categorySlice = createSlice({
     error: null,
     currentRequestId: undefined,
   },
-  reducers: {},
   extraReducers: {
     [fetchCategories.pending]: (state, action) => {
+      const { requestId } = action.meta
+
       if (state.loading === 'idle') {
         state.loading = 'pending'
         state.error = null
-        state.currentRequestId = action.meta.requestId
-      }
-    },
-    [fetchCategories.rejected]: (state, action) => {
-      const { requestId } = action.meta
-
-      if (state.loading === 'pending' && state.currentRequestId === requestId) {
-        state.loading = 'idle'
-        state.error = action.error
-        state.categories = []
-        state.currentRequestId = undefined
+        state.currentRequestId = requestId
       }
     },
     [fetchCategories.fulfilled]: (state, action) => {
@@ -35,6 +26,16 @@ const categorySlice = createSlice({
         state.loading = 'idle'
         state.error = null
         state.categories = action.payload
+        state.currentRequestId = undefined
+      }
+    },
+    [fetchCategories.rejected]: (state, action) => {
+      const { requestId } = action.meta
+
+      if (state.loading === 'pending' && state.currentRequestId === requestId) {
+        state.loading = 'idle'
+        state.error = action.error
+        state.categories = []
         state.currentRequestId = undefined
       }
     },
