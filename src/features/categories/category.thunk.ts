@@ -4,14 +4,18 @@ import { apolloClient } from 'app/api'
 
 import { GET_ALL_CATEGORIES } from 'apollo/categories.queries'
 import { GET_ALL_PRODUCTS } from 'apollo/products.queries'
+
+import type { Category, Product } from './category.types'
 import { getCategoryProducts } from 'helpers/products'
+import { RootState } from 'app/store'
 
-export const fetchCategories = createAsyncThunk(
+
+export const fetchCategories = createAsyncThunk<Category[], undefined, { state: RootState }>(
   'categories/fetchCategories',
-  async (_, { getState }) => {
-    const { loading } = getState().categories
+  async (_, { getState, requestId }) => {
+    const { currentRequestId, loading } = getState().categories
 
-    if (loading !== 'pending') return
+    if (loading !== 'pending' || requestId !== currentRequestId) return
 
     const {
       data: { Categories },
@@ -22,14 +26,12 @@ export const fetchCategories = createAsyncThunk(
         data: { Products: dbProducts },
       } = await apolloClient.query({ query: GET_ALL_PRODUCTS })
 
-      // eslint-disable-next-line no-unused-vars
-      dbProducts = dbProducts.map(({ __typename, ...product }) => {
+      dbProducts = dbProducts.map(({ __typename, ...product }: Product) => {
         return { ...product }
       })
 
       const categoriesMap = Categories.map(
-        // eslint-disable-next-line no-unused-vars
-        ({ __typename, active, ...category }) => {
+        ({ __typename, active, ...category }: Category) => {
           if (active === true)
             return {
               ...category,
