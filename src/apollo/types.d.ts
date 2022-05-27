@@ -9,3 +9,5 @@ export type UserToken = {
   access_token: string
   exp: number
 }
+
+export type UserResult = UserToken | QueryResultError

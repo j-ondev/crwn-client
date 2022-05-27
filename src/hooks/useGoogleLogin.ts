@@ -1,9 +1,8 @@
-/* eslint-disable no-undef */
 import { useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 import { useAppDispatch, useAppSelector } from './redux'
 
-import type { QueryResultError, UserToken } from 'apollo/types'
+import type { UserResult, UserToken } from 'apollo/types'
 
 import { getEnv } from 'utils/config'
 import { setUser } from 'features/user/user.slice'
@@ -21,9 +20,12 @@ type CredentialResponse = {
 const useGoogleLogin = () => {
   const dispatch = useAppDispatch()
   const user = useAppSelector(selectUser)
-  const [SignUpGoogle] = useMutation(SIGN_UP_GOOGLE)
+  const [SignUpGoogle] = useMutation<
+    { SignUpGoogle: UserResult },
+    { credential: string }
+  >(SIGN_UP_GOOGLE)
   const [SignInGoogle] = useMutation<
-    { SignInGoogle: UserToken | QueryResultError },
+    { SignInGoogle: UserResult },
     { credential: string }
   >(SIGN_IN_GOOGLE)
 
@@ -53,20 +55,20 @@ const useGoogleLogin = () => {
     if (typeof userExists === 'undefined')
       alert('Failed to comunicate with server.')
 
-    let token: UserToken = userExists as UserToken
+    let token = userExists as UserToken
 
     // The correct approach should be using a modal/toast
     // or some sort of ui-friendly feedback tool
     if (isApolloError(userExists)) {
       if (userExists.code !== 'user/not-found') return alert(userExists.code)
       else {
-        const signUpResult = await SignUpGoogle({
+        const { data: signUpData } = await SignUpGoogle({
           variables: { credential },
         })
 
-        const newUser: UserToken | QueryResultError =
-          signUpResult.data.SignUpGoogle
+        const newUser = signUpData?.SignUpGoogle
 
+        if (!newUser) return alert('Failed to register user.')
         if (isApolloError(newUser)) return alert(newUser.code)
 
         token = newUser
