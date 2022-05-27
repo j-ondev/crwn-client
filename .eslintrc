@@ -3,16 +3,21 @@
     "browser": true
   },
   "extends": [
-    "plugin:react/jsx-runtime"
+    "plugin:react/jsx-runtime",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
   ],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     }
   },
+  "parser": "@typescript-eslint/parser",
   "plugins": ["react"],
   "rules":{
     "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error"
+    "react/jsx-uses-vars": "error",
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
   }
 }

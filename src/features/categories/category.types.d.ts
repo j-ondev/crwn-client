@@ -1,7 +1,7 @@
 import { SerializedError } from '@reduxjs/toolkit'
 
-export type Product = {
-  __typename?: string
+export type GqlProduct = {
+  __typename: string
   id: number
   category: number
   name: string
@@ -9,18 +9,29 @@ export type Product = {
   image_url: string
 }
 
+export type Product = {
+  id: number
+  category: number
+  name: string
+  price: number
+  image_url: string
+}
+
+export type GqlCategory = {
+  __typename: string
+  active: boolean
+} & Category
+
 export type Category = {
-  __typename?: string
   id: number
   title: string
   image_url: string
   items: Product[]
-  active?: boolean
 }
 
 export type CategorySliceState = {
-  categories: Category[]
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-  error: SerializedError | null
-  currentRequestId: string | undefined
+  readonly categories: Category[]
+  readonly loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+  readonly error: SerializedError | null
+  readonly currentRequestId: string | undefined
 }

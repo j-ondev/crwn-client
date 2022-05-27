@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 import { fetchCategories } from './category.thunk'
-import type { Category, CategorySliceState } from './category.types'
+import type { CategorySliceState } from './category.types'
 
 const categorySlice = createSlice({
   name: 'category',
@@ -26,7 +26,10 @@ const categorySlice = createSlice({
       .addCase(fetchCategories.fulfilled, (state, action) => {
         const { requestId } = action.meta
 
-        if (state.loading === 'pending' && state.currentRequestId === requestId) {
+        if (
+          state.loading === 'pending' &&
+          state.currentRequestId === requestId
+        ) {
           state.loading = 'idle'
           state.error = null
           state.categories = action.payload
@@ -36,7 +39,10 @@ const categorySlice = createSlice({
       .addCase(fetchCategories.rejected, (state, action) => {
         const { requestId } = action.meta
 
-        if (state.loading === 'pending' && state.currentRequestId === requestId) {
+        if (
+          state.loading === 'pending' &&
+          state.currentRequestId === requestId
+        ) {
           state.loading = 'idle'
           state.categories = []
           state.currentRequestId = undefined

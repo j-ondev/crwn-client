@@ -4,11 +4,16 @@
  * GraphQL data to match the same structure.
  */
 
-export const getCategoryProducts = (category, products) =>
+import { Category, Product } from 'features/categories/category.types'
+
+export const getCategoryProducts = (category: Category, products: Product[]) =>
   products.filter((product) => category.id === product.category)
 
-export const getProductsByCategory = (categories, products) => {
-  const productsList = {}
+export const getProductsByCategory = (
+  categories: Category[],
+  products: Product[]
+) => {
+  const productsList: Record<string, Product[]> = {}
 
   categories.map(
     (category) =>

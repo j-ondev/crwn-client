@@ -17,14 +17,10 @@ const App = () => {
   useGoogleLogin()
 
   useEffect(() => {
-    async function fetchCategoriesAsync() {
-      const result = await dispatch(fetchCategories())
+    const result = dispatch(fetchCategories())
 
-      if (fetchCategories.rejected.match(result) && !result.payload)
-        alert(result.error.message)
-    }
-
-    fetchCategoriesAsync()
+    if (fetchCategories.rejected.match(result) && !result.payload)
+      alert(result.error.message)
   })
 
   return (

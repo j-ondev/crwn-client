@@ -1,11 +1,13 @@
+import { Dispatch, Middleware, MiddlewareAPI } from '@reduxjs/toolkit'
 import moment from 'moment'
 
 import { RENEW_TOKEN } from 'apollo/user.queries'
 import { setUser } from 'features/user/user.slice'
 import { apolloClient } from 'app/api'
+import { RootState } from 'app/store'
 
-const autoLoginMiddleware =
-  ({ getState, dispatch }) =>
+const autoLoginMiddleware: Middleware =
+  ({ dispatch, getState }: MiddlewareAPI<Dispatch, RootState>) =>
   (next) =>
   async (action) => {
     if (!action.type) return next(action)
