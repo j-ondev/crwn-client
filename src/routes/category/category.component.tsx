@@ -12,8 +12,14 @@ import Spinner from 'components/spinner/spinner.component'
 
 import { CategoryContainer, Title } from './category.styles'
 
+type CategoryRouteParams = {
+  category: string
+}
+
 const Category = () => {
-  const { category } = useParams()
+  const { category } = useParams<
+    keyof CategoryRouteParams
+  >() as CategoryRouteParams
   const categoriesMap = useSelector(selectProductsByCategory)
   const fetchStatus = useSelector(selectCategoriesLoading)
   const [products, setProducts] = useState(categoriesMap[category])

@@ -1,14 +1,23 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, FormEvent, ChangeEvent } from 'react'
 import { useMutation } from '@apollo/client'
 
+import { useAppDispatch } from 'hooks/redux'
+import { isApolloError } from 'utils/ts/predicates'
 import { setUser } from 'features/user/user.slice'
 import { SIGN_IN } from 'apollo/user.queries'
 
 import Input from 'components/input/input.component'
 import Button from 'components/button/button.component'
 
+import type { UserInputResult } from 'apollo/types/user'
+
 import { SignInContainer, ButtonContainer } from './sign-in-form.styles'
-import { useDispatch } from 'react-redux'
+
+type SignInResult = { SignIn: UserInputResult }
+type SignInVariables = {
+  email: string
+  password: string
+}
 
 const defaultFormFields = {
   in_email: '',
@@ -16,46 +25,51 @@ const defaultFormFields = {
 }
 
 const SignInForm = () => {
-  const dispatch = useDispatch()
-  const [SignIn] = useMutation(SIGN_IN)
+  const dispatch = useAppDispatch()
+  const [SignIn] = useMutation<SignInResult, SignInVariables>(SIGN_IN)
   const [formFields, setFormFields] = useState(defaultFormFields)
   const { in_email, in_password } = formFields
 
   useEffect(() => {
-    // eslint-disable-next-line no-undef
-    google.accounts.id.renderButton(
-      document.getElementById('g-button-sign-in'),
-      { theme: 'filled_blue', size: 'large', type: 'icon' }
-    )
-    // eslint-disable-next-line no-undef
-    google.accounts.id.cancel()
+    const googleButton = document.getElementById('g-button-sign-in')
+
+    if (googleButton) {
+      google.accounts.id.renderButton(googleButton, {
+        theme: 'filled_blue',
+        size: 'large',
+        type: 'icon',
+      })
+      google.accounts.id.cancel()
+    }
   })
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields)
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     if (!in_email || !in_password)
       return alert('You must fill all the fields to register')
 
-    const {
-      data: { SignIn: user },
-    } = await SignIn({ variables: { email: in_email, password: in_password } })
+    const { data: signInData } = await SignIn({
+      variables: { email: in_email, password: in_password },
+    })
 
-    if (user.__typename === 'UserError') return alert(user.code)
+    const user = signInData?.SignIn
+    if (typeof user === 'undefined')
+      return alert('Failed to communicate with server.')
 
-    if (user.__typename === 'JsonWebToken') {
-      const { access_token, exp } = user
+    if (isApolloError(user)) return alert(user.code)
 
-      dispatch(setUser({ access_token, exp }))
-      resetFormFields()
-    }
+    const { access_token, exp } = user
+
+    dispatch(setUser({ access_token, exp }))
+    resetFormFields()
   }
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
 
     setFormFields({ ...formFields, [name]: value })

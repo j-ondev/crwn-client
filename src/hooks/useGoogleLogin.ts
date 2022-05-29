@@ -2,15 +2,20 @@ import { useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 import { useAppDispatch, useAppSelector } from './redux'
 
-import type { UserResult, UserToken } from 'apollo/types'
-
 import { getEnv } from 'utils/config'
 import { setUser } from 'features/user/user.slice'
 import { isApolloError } from 'utils/ts/predicates'
 import { selectUser } from 'features/user/user.selector'
 import { SIGN_IN_GOOGLE, SIGN_UP_GOOGLE } from 'apollo/user.queries'
 
+import { UserInputResult, UserToken } from 'apollo/types/user'
+import { UserErrorCodes } from 'apollo/types/errors'
+
 const client_id = getEnv('GOOGLE_CLIENT_ID')
+
+type SignUpGoogleResult = { SignUpGoogle: UserInputResult }
+type SignInGoogleResult = { SignInGoogle: UserInputResult }
+type SignGoogleVariables = { credential: string }
 
 type CredentialResponse = {
   credential: string
@@ -20,14 +25,12 @@ type CredentialResponse = {
 const useGoogleLogin = () => {
   const dispatch = useAppDispatch()
   const user = useAppSelector(selectUser)
-  const [SignUpGoogle] = useMutation<
-    { SignUpGoogle: UserResult },
-    { credential: string }
-  >(SIGN_UP_GOOGLE)
-  const [SignInGoogle] = useMutation<
-    { SignInGoogle: UserResult },
-    { credential: string }
-  >(SIGN_IN_GOOGLE)
+  const [SignUpGoogle] = useMutation<SignUpGoogleResult, SignGoogleVariables>(
+    SIGN_UP_GOOGLE
+  )
+  const [SignInGoogle] = useMutation<SignInGoogleResult, SignGoogleVariables>(
+    SIGN_IN_GOOGLE
+  )
 
   useEffect(() => {
     if (!user) {
@@ -53,14 +56,15 @@ const useGoogleLogin = () => {
 
     const userExists = signInData?.SignInGoogle
     if (typeof userExists === 'undefined')
-      alert('Failed to comunicate with server.')
+      alert('Failed to communicate with server.')
 
     let token = userExists as UserToken
 
     // The correct approach should be using a modal/toast
     // or some sort of ui-friendly feedback tool
     if (isApolloError(userExists)) {
-      if (userExists.code !== 'user/not-found') return alert(userExists.code)
+      if (userExists.code !== UserErrorCodes.NOT_FOUND)
+        return alert(userExists.code)
       else {
         const { data: signUpData } = await SignUpGoogle({
           variables: { credential },

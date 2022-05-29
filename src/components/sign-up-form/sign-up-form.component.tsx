@@ -1,14 +1,18 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import { useLazyQuery, useMutation } from '@apollo/client'
 
+import { useAppDispatch } from 'hooks/redux'
+import { isApolloError } from 'utils/ts/predicates'
 import { GET_USER, ADD_USER } from 'apollo/user.queries'
-import { setUser } from 'features/user/user.slice.js'
+import { setUser } from 'features/user/user.slice'
 
 import Input from 'components/input/input.component'
 import Button from 'components/button/button.component'
 
-import { SignUpContainer } from './sign-up-form.styles.jsx'
+import type { User, UserArrayResult, UserInputResult } from 'apollo/types/user'
+import { UserErrorCodes } from 'apollo/types/errors'
+
+import { SignUpContainer } from './sign-up-form.styles'
 
 const defaultFormFields = {
   display_name: '',
@@ -17,10 +21,26 @@ const defaultFormFields = {
   confirm_password: '',
 }
 
+type GetUserResult = {
+  User: UserArrayResult
+}
+
+type AddUserResult = {
+  AddUser: UserInputResult
+}
+
+type GetUserVariables = {
+  filter: {
+    email: string
+  }
+}
+
+type AddUserVariables = Pick<User, 'display_name' | 'email' | 'password'>
+
 const SignUpForm = () => {
-  const dispatch = useDispatch()
-  const [GetUser] = useLazyQuery(GET_USER)
-  const [AddUser] = useMutation(ADD_USER)
+  const dispatch = useAppDispatch()
+  const [GetUser] = useLazyQuery<GetUserResult, GetUserVariables>(GET_USER)
+  const [AddUser] = useMutation<AddUserResult, AddUserVariables>(ADD_USER)
   const [formFields, setFormFields] = useState(defaultFormFields)
   const { display_name, email, password, confirm_password } = formFields
 
@@ -28,7 +48,7 @@ const SignUpForm = () => {
     setFormFields(defaultFormFields)
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     if (!display_name || !email || !password || !confirm_password)
@@ -36,9 +56,7 @@ const SignUpForm = () => {
 
     if (password !== confirm_password) return alert('Passwords do not match')
 
-    const {
-      data: { User: userExists },
-    } = await GetUser({
+    const { data: UserData } = await GetUser({
       variables: {
         filter: {
           email,
@@ -46,28 +64,37 @@ const SignUpForm = () => {
       },
     })
 
+    const userExists = UserData?.User
+    if (typeof userExists === 'undefined')
+      return alert('Failed to communicate with server.')
+
     if (userExists.__typename === 'UserArray')
       return alert(
         'This email is already in use. Please try to log in instead.'
       )
+    else if (
+      isApolloError(userExists) &&
+      userExists.code !== UserErrorCodes.NOT_FOUND
+    )
+      return alert(userExists.code)
 
-    const {
-      data: { AddUser: newUser },
-    } = await AddUser({
+    const { data: AddUserData } = await AddUser({
       variables: { display_name, email, password },
     })
 
-    if (newUser.__typename === 'UserError') return alert(newUser.code)
+    const newUser = AddUserData?.AddUser
+    if (typeof newUser === 'undefined')
+      return alert('Failed to communicate with server.')
 
-    if (newUser.__typename === 'JsonWebToken') {
-      const { access_token, exp } = newUser
+    if (isApolloError(newUser)) return alert(newUser.code)
 
-      dispatch(setUser({ access_token, exp }))
-      resetFormFields()
-    }
+    const { access_token, exp } = newUser
+
+    dispatch(setUser({ access_token, exp }))
+    resetFormFields()
   }
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
 
     setFormFields({ ...formFields, [name]: value })

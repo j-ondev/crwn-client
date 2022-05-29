@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
+import { ReactComponent as LogoSvg } from '../../assets/crown.svg'
+
 export const NavigationContainer = styled.div`
   height: 70px;
   width: 100%;
@@ -14,6 +16,8 @@ export const LogoContainer = styled(Link)`
   align-items: center;
   margin-left: 7.5px;
 `
+
+export const CrwnLogo = styled(LogoSvg)``
 
 export const NavLinks = styled.div`
   width: 50%;

@@ -9,13 +9,12 @@ import { selectIsCartOpen } from 'features/cart/cart.selector'
 import { setUser } from 'features/user/user.slice'
 import { selectUser } from 'features/user/user.selector'
 
-import { ReactComponent as CrwnLogo } from '../../assets/crown.svg'
-
 import {
   NavigationContainer,
   LogoContainer,
   NavLinks,
   NavLink,
+  CrwnLogo,
 } from './navigation.styles'
 
 const Navigation = () => {
@@ -31,7 +30,7 @@ const Navigation = () => {
     <Fragment>
       <NavigationContainer>
         <LogoContainer to="/">
-          <CrwnLogo className="logo" />
+          <CrwnLogo />
         </LogoContainer>
         <NavLinks>
           <NavLink to="/shop">SHOP</NavLink>
