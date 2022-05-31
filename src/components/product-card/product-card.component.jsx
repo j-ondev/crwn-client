@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'hooks/redux'
 
 import { selectCartItems } from 'features/cart/cart.selector'
 import { setCartItems } from 'features/cart/cart.slice'
@@ -14,8 +14,8 @@ import {
 } from './product-card.styles'
 
 const ProductCard = ({ product }) => {
-  const dispatch = useDispatch()
-  const cartItems = useSelector(selectCartItems)
+  const dispatch = useAppDispatch()
+  const cartItems = useAppSelector(selectCartItems)
   const { name, price, image_url } = product
 
   const addProductToCart = () =>

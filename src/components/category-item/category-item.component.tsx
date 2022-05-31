@@ -1,10 +1,11 @@
+import { Category } from 'features/categories/category.types'
 import {
   BackgroundImage,
   Body,
   CategoryItemContainer,
 } from './category-item.styles'
 
-const CategoryItem = ({ category }) => {
+const CategoryItem = ({ category }: { category: Category }) => {
   const { image_url, title } = category
   return (
     <CategoryItemContainer>

@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from 'hooks/redux'
 
 import {
   selectProductsByCategory,
@@ -10,8 +10,8 @@ import CategoryPreview from 'components/category-preview/category-preview.compon
 import Spinner from 'components/spinner/spinner.component'
 
 const CategoriesPreview = () => {
-  const categoriesMap = useSelector(selectProductsByCategory)
-  const fetchStatus = useSelector(selectCategoriesLoading)
+  const categoriesMap = useAppSelector(selectProductsByCategory)
+  const fetchStatus = useAppSelector(selectCategoriesLoading)
 
   return (
     <Fragment>

@@ -1,19 +1,24 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'hooks/redux'
 
 import { selectCartItems } from 'features/cart/cart.selector'
 import { setCartItems } from 'features/cart/cart.slice'
+import { CartItem } from 'features/cart/cart.types'
 import {
   addItemToCart,
   removeItemFromCart,
   clearItemFromCart,
 } from 'helpers/cart'
 
-import './checkout-item.styles.scss'
+import {
+  CheckoutItemContainer,
+  ImageContainer,
+  RemoveButton,
+} from './checkout-item.styles'
 
-const CheckoutItem = ({ cartItem }) => {
-  const dispatch = useDispatch()
+const CheckoutItem = ({ cartItem }: { cartItem: CartItem }) => {
+  const dispatch = useAppDispatch()
   const { name, image_url, price, quantity } = cartItem
-  const cartItems = useSelector(selectCartItems)
+  const cartItems = useAppSelector(selectCartItems)
 
   const addItemHandler = () =>
     dispatch(setCartItems(addItemToCart(cartItems, cartItem)))
@@ -23,10 +28,10 @@ const CheckoutItem = ({ cartItem }) => {
     dispatch(setCartItems(clearItemFromCart(cartItems, cartItem)))
 
   return (
-    <div className="checkout-item-container">
-      <div className="image-container">
+    <CheckoutItemContainer>
+      <ImageContainer>
         <img src={image_url} alt={name} />
-      </div>
+      </ImageContainer>
       <span className="name">{name}</span>
       <span className="quantity">
         <div className="arrow" onClick={removeItemHandler}>
@@ -38,10 +43,8 @@ const CheckoutItem = ({ cartItem }) => {
         </div>
       </span>
       <span className="price">{price}</span>
-      <div className="remove-button" onClick={clearItemHandler}>
-        &#10005;
-      </div>
-    </div>
+      <RemoveButton onClick={clearItemHandler}>&#10005;</RemoveButton>
+    </CheckoutItemContainer>
   )
 }
 

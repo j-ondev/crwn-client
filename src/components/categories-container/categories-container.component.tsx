@@ -1,11 +1,12 @@
 import CategoryItem from 'components/category-item/category-item.component'
+import { Category } from 'features/categories/category.types'
 
 import {
   CategoriesContainer,
   CategoryLink,
 } from './categories-container.styles'
 
-const CategoryContainer = ({ categories }) => {
+const CategoryContainer = ({ categories }: { categories: Category[] }) => {
   return (
     <CategoriesContainer>
       {categories.map((category) => (

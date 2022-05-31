@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import { Outlet } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'hooks/redux'
 
 import CartIcon from 'components/cart-icon/cart-icon.component'
 import CartDropdown from 'components/cart-dropdown/cart-dropdown.component'
@@ -18,9 +18,9 @@ import {
 } from './navigation.styles'
 
 const Navigation = () => {
-  const dispatch = useDispatch()
-  const isCartOpen = useSelector(selectIsCartOpen)
-  const user = useSelector(selectUser)
+  const dispatch = useAppDispatch()
+  const isCartOpen = useAppSelector(selectIsCartOpen)
+  const user = useAppSelector(selectUser)
 
   const signOutHandler = () => {
     dispatch(setUser(null))

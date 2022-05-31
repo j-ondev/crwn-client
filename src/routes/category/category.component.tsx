@@ -1,6 +1,6 @@
 import { useState, useEffect, Fragment } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from 'hooks/redux'
 
 import {
   selectProductsByCategory,
@@ -20,8 +20,8 @@ const Category = () => {
   const { category } = useParams<
     keyof CategoryRouteParams
   >() as CategoryRouteParams
-  const categoriesMap = useSelector(selectProductsByCategory)
-  const fetchStatus = useSelector(selectCategoriesLoading)
+  const categoriesMap = useAppSelector(selectProductsByCategory)
+  const fetchStatus = useAppSelector(selectCategoriesLoading)
   const [products, setProducts] = useState(categoriesMap[category])
 
   useEffect(() => {

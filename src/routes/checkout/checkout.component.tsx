@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux'
+import { useAppSelector } from 'hooks/redux'
 import {
   selectCartItems,
   selectCartSubtotal,
@@ -15,8 +15,8 @@ import {
 } from './checkout.styles'
 
 const Checkout = () => {
-  const cartItems = useSelector(selectCartItems)
-  const cartSubtotal = useSelector(selectCartSubtotal)
+  const cartItems = useAppSelector(selectCartItems)
+  const cartSubtotal = useAppSelector(selectCartSubtotal)
 
   return (
     // I'd prefer using a table for this,

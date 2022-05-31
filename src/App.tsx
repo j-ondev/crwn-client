@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'hooks/redux'
 import { Routes, Route } from 'react-router-dom'
 
 import useGoogleLogin from 'hooks/useGoogleLogin'
@@ -12,15 +12,19 @@ import Auth from 'routes/auth/auth.component'
 import Checkout from 'routes/checkout/checkout.component'
 
 const App = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useGoogleLogin()
 
   useEffect(() => {
-    const result = dispatch(fetchCategories())
+    const fetchAsyncEffect = async () => {
+      const result = await dispatch(fetchCategories())
 
-    if (fetchCategories.rejected.match(result) && !result.payload)
-      alert(result.error.message)
+      if (fetchCategories.rejected.match(result) && !result.payload)
+        return alert(result.error.message)
+    }
+
+    fetchAsyncEffect()
   })
 
   return (
