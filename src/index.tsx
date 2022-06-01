@@ -11,8 +11,7 @@ import { apolloClient } from 'app/api'
 import { stripePromise } from 'utils/stripe/stripe.utils'
 import App from './App'
 
-import './fonts.scss'
-import './index.scss'
+import { GlobalStyle } from 'global.styles'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
@@ -22,6 +21,7 @@ root.render(
         <PersistGate persistor={persistor}>
           <BrowserRouter>
             <Elements stripe={stripePromise}>
+              <GlobalStyle />
               <App />
             </Elements>
           </BrowserRouter>

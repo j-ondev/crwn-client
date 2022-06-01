@@ -4,7 +4,6 @@ export const ProductCardContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  height: 350px;
   align-items: center;
   position: relative;
 
@@ -19,8 +18,10 @@ export const ProductCardContainer = styled.div`
     width: 80%;
     opacity: 0.7;
     position: absolute;
-    top: 255px;
+    bottom: 15%;
     display: none;
+    min-width: unset;
+    padding: unset;
   }
 
   &:hover {
@@ -33,11 +34,21 @@ export const ProductCardContainer = styled.div`
       display: flex;
     }
   }
+
+  @media screen and (max-width: 800px) {
+    img {
+      margin-bottom: 0;
+    }
+  }
 `
 
 export const CardName = styled.span`
   width: 90%;
   margin-bottom: 15px;
+
+  @media screen and (max-width: 800px) {
+    margin-bottom: 10px;
+  }
 `
 
 export const CardPrice = styled.span`
@@ -51,4 +62,8 @@ export const CardFooter = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 22px;
+
+  @media screen and (max-width: 800px) {
+    height: auto;
+  }
 `
