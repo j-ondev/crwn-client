@@ -6,7 +6,7 @@ export type GqlProduct = {
   category: number
   name: string
   price: number
-  image_url: string
+  image_url?: string
 }
 
 export type Product = {
@@ -14,7 +14,7 @@ export type Product = {
   category: number
   name: string
   price: number
-  image_url: string
+  image_url?: string
 }
 
 export type GqlCategory = {
@@ -25,7 +25,7 @@ export type GqlCategory = {
 export type Category = {
   id: number
   title: string
-  image_url: string
+  image_url?: string
   items: Product[]
 }
 

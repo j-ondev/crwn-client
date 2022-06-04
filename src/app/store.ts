@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
-import autoLoginMiddleware from 'features/middlewares/auto-login.middleware'
+// import autoLoginMiddleware from 'features/middlewares/auto-login.middleware'
 import {
   persistReducer,
   persistStore,
@@ -12,7 +12,7 @@ import {
   REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import logger from 'redux-logger'
+// import logger from 'redux-logger'
 
 import userReducer from 'features/user/user.slice'
 import cartReducer from 'features/cart/cart.slice'
@@ -41,7 +41,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(logger, autoLoginMiddleware),
+    }) /* .concat(logger, autoLoginMiddleware) */,
 })
 
 export type RootState = ReturnType<typeof store.getState>
