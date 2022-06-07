@@ -4,10 +4,9 @@ import { UserSliceState } from './user.types'
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: null as UserSliceState | null,
+  initialState: null as UserSliceState,
   reducers: {
-    setUser: (_, action: PayloadAction<UserSliceState | null>) =>
-      action.payload,
+    setUser: (_, action: PayloadAction<UserSliceState>) => action.payload,
   },
 })
 

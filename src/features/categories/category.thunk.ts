@@ -1,18 +1,30 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-import { apolloClient } from 'app/api'
-
 import { GET_ALL_CATEGORIES } from 'apollo/categories.queries'
 import { GET_ALL_PRODUCTS } from 'apollo/products.queries'
 
-import type { GqlCategory, Category, GqlProduct } from './category.types'
+import type {
+  GqlCategory,
+  Category,
+  GqlProduct,
+  CategorySliceState,
+} from './category.types'
+import type { UserSliceState } from 'features/user/user.types'
+import type { CartSliceState } from 'features/cart/cart.types'
+
 import { getCategoryProducts } from 'helpers/products'
-import { RootState } from 'app/store'
+import { apolloClient } from 'app/api'
+
+type TState = {
+  user: UserSliceState
+  cart: CartSliceState
+  categories: CategorySliceState
+}
 
 export const fetchCategories = createAsyncThunk<
   Category[],
   undefined,
-  { state: RootState }
+  { state: TState }
 >('categories/fetchCategories', async (_, { getState, requestId }) => {
   const { currentRequestId, loading } = getState().categories
 

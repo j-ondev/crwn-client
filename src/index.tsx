@@ -6,18 +6,20 @@ import { ApolloProvider } from '@apollo/client'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Elements } from '@stripe/react-stripe-js'
 
-import { store, persistor } from 'app/store'
-import { apolloClient } from 'app/api'
+import store, { persistor } from 'app/store'
+import { injectStore, apolloClient } from 'app/api'
 import { stripePromise } from 'utils/stripe/stripe.utils'
 import App from './App'
 
 import { GlobalStyle } from 'global.styles'
 
+injectStore(store)
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
-    <ApolloProvider client={apolloClient}>
-      <Provider store={store}>
+    <Provider store={store}>
+      <ApolloProvider client={apolloClient}>
         <PersistGate persistor={persistor}>
           <BrowserRouter>
             <Elements stripe={stripePromise}>
@@ -26,7 +28,7 @@ root.render(
             </Elements>
           </BrowserRouter>
         </PersistGate>
-      </Provider>
-    </ApolloProvider>
+      </ApolloProvider>
+    </Provider>
   </React.StrictMode>
 )

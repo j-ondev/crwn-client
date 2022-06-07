@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 type BackgroundImageProps = {
-  imageUrl: string
+  imageUrl: string | null | undefined
 }
 
 export const BackgroundImage = styled.div<BackgroundImageProps>`

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import { ReactComponent as LogoSvg } from '../../assets/crown.svg'
+import { ReactComponent as LogoSvg } from 'assets/crown.svg'
 
 export const NavigationContainer = styled.div`
   height: 70px;

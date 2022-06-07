@@ -4,11 +4,17 @@ import {
   HttpLink,
   ApolloLink,
 } from '@apollo/client'
+import { EnhancedStore } from '@reduxjs/toolkit'
 
 import { getEnv } from 'utils/config'
-import { store } from './store'
 
 const apiUrl = getEnv('API_URL')
+
+let store: EnhancedStore
+
+export const injectStore = (_store: EnhancedStore) => {
+  store = _store
+}
 
 const link = new HttpLink({ uri: `${apiUrl}/graphql` })
 const authLink = new ApolloLink((operation, forward) => {

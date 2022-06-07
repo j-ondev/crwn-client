@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import mockCartItems from 'mocks/cart-items'
-import { render, screen, fireEvent, act } from 'utils/test'
+import { render, screen, fireEvent, act } from 'utils/testing'
 
 import store from 'app/store'
 import CartDropdown from './cart-dropdown.component'
@@ -29,7 +29,7 @@ describe('[Component] CartDropdown', () => {
   })
 
   it('Button redirecting to checkout', () => {
-    const button = screen.getByRole('button')
+    const button = screen.getByRole('button', { name: /GO TO CHECKOUT/i })
     fireEvent.click(button)
 
     expect(mockedUseNavigate).toHaveBeenCalled()

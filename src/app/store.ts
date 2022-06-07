@@ -14,9 +14,9 @@ import {
 import storage from 'redux-persist/lib/storage'
 // import logger from 'redux-logger'
 
+import categoriesReducer from 'features/categories/category.slice'
 import userReducer from 'features/user/user.slice'
 import cartReducer from 'features/cart/cart.slice'
-import categoriesReducer from 'features/categories/category.slice'
 
 const persistConfig = {
   key: 'root',
@@ -33,7 +33,7 @@ const persistedReducer = persistReducer(
   })
 )
 
-export const store = configureStore({
+const store = configureStore({
   reducer: persistedReducer,
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) =>
@@ -44,6 +44,7 @@ export const store = configureStore({
     }) /* .concat(logger, autoLoginMiddleware) */,
 })
 
+export type TStore = typeof store
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 export const persistor = persistStore(store)

@@ -3,8 +3,8 @@ import moment from 'moment'
 
 import { RENEW_TOKEN } from 'apollo/user.queries'
 import { setUser } from 'features/user/user.slice'
+import type { RootState } from 'app/store'
 import { apolloClient } from 'app/api'
-import { RootState } from 'app/store'
 
 const autoLoginMiddleware: Middleware =
   ({ dispatch, getState }: MiddlewareAPI<Dispatch, RootState>) =>
