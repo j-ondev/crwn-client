@@ -3,7 +3,7 @@ import { render, screen } from 'utils/testing'
 import Button, { BUTTON_TYPE_CLASSES } from './button.component'
 
 describe('[Component] Button', () => {
-  it('Render button with base style', () => {
+  it('Render button with base style by default', () => {
     render(<Button />)
 
     expect(screen.getByRole('button')).toHaveStyle({

@@ -12,8 +12,10 @@ import {
   CardName,
   CardFooter,
 } from './product-card.styles'
+import { FC } from 'react'
+import { Product } from 'features/categories/category.types'
 
-const ProductCard = ({ product }) => {
+const ProductCard: FC<{ product: Product }> = ({ product }) => {
   const dispatch = useAppDispatch()
   const cartItems = useAppSelector(selectCartItems)
   const { name, price, image_url } = product

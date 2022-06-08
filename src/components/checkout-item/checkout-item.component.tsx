@@ -21,8 +21,9 @@ import {
 } from './checkout-item.styles'
 
 const CheckoutItem: FC<{ cartItem: CartItem }> = memo(({ cartItem }) => {
-  const dispatch = useAppDispatch()
   const { name, image_url, price, quantity } = cartItem
+
+  const dispatch = useAppDispatch()
   const cartItems = useAppSelector(selectCartItems)
 
   const addItemHandler = () =>
@@ -44,7 +45,9 @@ const CheckoutItem: FC<{ cartItem: CartItem }> = memo(({ cartItem }) => {
         <Arrow onClick={addItemHandler}>&#10095;</Arrow>
       </Quantity>
       <BaseSpan>{price}</BaseSpan>
-      <RemoveButton onClick={clearItemHandler}>&#10005;</RemoveButton>
+      <RemoveButton onClick={clearItemHandler} role="button">
+        &#10005;
+      </RemoveButton>
     </CheckoutItemContainer>
   )
 })

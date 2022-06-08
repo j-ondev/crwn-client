@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
-// import autoLoginMiddleware from 'features/middlewares/auto-login.middleware'
+import autoLoginMiddleware from 'features/middlewares/auto-login.middleware'
 import {
   persistReducer,
   persistStore,
@@ -12,11 +12,12 @@ import {
   REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-// import logger from 'redux-logger'
+import logger from 'redux-logger'
 
 import categoriesReducer from 'features/categories/category.slice'
 import userReducer from 'features/user/user.slice'
 import cartReducer from 'features/cart/cart.slice'
+import { getEnv } from 'utils/config'
 
 const persistConfig = {
   key: 'root',
@@ -33,6 +34,12 @@ const persistedReducer = persistReducer(
   })
 )
 
+const isDevelopment = getEnv('NODE_ENV') === 'development'
+
+const middlewares = [autoLoginMiddleware]
+
+if (isDevelopment) middlewares.push(logger)
+
 const store = configureStore({
   reducer: persistedReducer,
   devTools: process.env.NODE_ENV !== 'production',
@@ -41,7 +48,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }) /* .concat(logger, autoLoginMiddleware) */,
+    }).concat(middlewares),
 })
 
 export type TStore = typeof store

@@ -9,7 +9,7 @@ const CategoryItem = ({ category }: { category: Category }) => {
   const { image_url, title } = category
   return (
     <CategoryItemContainer>
-      <BackgroundImage imageUrl={image_url} />
+      <BackgroundImage imageUrl={image_url} id="teste" />
       <Body>
         <h2>{title}</h2>
         <p>Shop Now</p>

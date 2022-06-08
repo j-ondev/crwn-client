@@ -3,7 +3,7 @@ import { InputHTMLAttributes, FC } from 'react'
 import { FormInputLabel, Group, FormInput } from './input.styles'
 
 type FormInputProps = {
-  label: string
+  label?: string
 } & InputHTMLAttributes<HTMLInputElement>
 
 const Input: FC<FormInputProps> = ({ label, id, name, ...otherProps }) => {

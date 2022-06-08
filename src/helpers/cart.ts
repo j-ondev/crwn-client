@@ -1,6 +1,12 @@
 import { CartItem } from 'features/cart/cart.types'
+import { Product } from 'features/categories/category.types'
 
-const addCartItem = (cartItems: CartItem[], productToAdd: CartItem) => {
+type ProductOrCartItem = CartItem | Product
+
+const addCartItem = (
+  cartItems: CartItem[],
+  productToAdd: ProductOrCartItem
+) => {
   const existingCartItem = cartItems.find(
     (cartItem) => cartItem.id === productToAdd.id
   )
@@ -16,7 +22,10 @@ const addCartItem = (cartItems: CartItem[], productToAdd: CartItem) => {
   return [...cartItems, { ...productToAdd, quantity: 1 }]
 }
 
-const removeCartItem = (cartItems: CartItem[], productToRemove: CartItem) => {
+const removeCartItem = (
+  cartItems: CartItem[],
+  productToRemove: ProductOrCartItem
+) => {
   const existingCartItem = cartItems.find(
     (cartItem) => cartItem.id === productToRemove.id
   )
@@ -31,18 +40,22 @@ const removeCartItem = (cartItems: CartItem[], productToRemove: CartItem) => {
   )
 }
 
-const clearCartItem = (cartItems: CartItem[], productToRemove: CartItem) =>
-  cartItems.filter((cartItem) => cartItem.id !== productToRemove.id)
+const clearCartItem = (
+  cartItems: CartItem[],
+  productToRemove: ProductOrCartItem
+) => cartItems.filter((cartItem) => cartItem.id !== productToRemove.id)
 
-export const addItemToCart = (cartItems: CartItem[], productToAdd: CartItem) =>
-  addCartItem(cartItems, productToAdd)
+export const addItemToCart = (
+  cartItems: CartItem[],
+  productToAdd: ProductOrCartItem
+) => addCartItem(cartItems, productToAdd)
 
 export const removeItemFromCart = (
   cartItems: CartItem[],
-  productToRemove: CartItem
+  productToRemove: ProductOrCartItem
 ) => removeCartItem(cartItems, productToRemove)
 
 export const clearItemFromCart = (
   cartItems: CartItem[],
-  productToRemove: CartItem
+  productToRemove: ProductOrCartItem
 ) => clearCartItem(cartItems, productToRemove)
