@@ -63,16 +63,5 @@
     "@typescript-eslint/eslint-plugin": "^5.26.0",
     "@typescript-eslint/parser": "^5.26.0",
     "jest-styled-components": "^7.0.8"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "lines": 90,
-        "statements": 90
-      }
-    }
   }
 }

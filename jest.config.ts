@@ -1,15 +1,19 @@
 import type { Config } from '@jest/types'
 
 const config: Config.InitialOptions = {
-  // verbose: true,
-  // roots: ['<rootDir>/src'],
+  verbose: true,
   // transform: { '^.+\\.tsx?$': 'ts-jest' },
-  // setupFilesAfterEnv: [
-  //   '@testing-library/react/cleanup-after-each',
-  //   '@testing-library/jest-dom/extend-expect',
-  // ],
-  // testRegex: '(**/.*|(\\.|/)(test|spec))\\.tsx?$',
-  moduleDirectories: ['node_modules', 'src/utils'],
+  rootDir: 'src',
+  setupFilesAfterEnv: [
+    '@testing-library/react/cleanup-after-each',
+    '@testing-library/jest-dom/extend-expect',
+  ],
+  moduleDirectories: ['node_modules'],
+  modulePathIgnorePatterns: [
+    '<rootDir>/mocks',
+    '<rootDir>/utils',
+    '<rootDir>/hooks',
+  ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   testEnvironment: 'jsdom',
 }
